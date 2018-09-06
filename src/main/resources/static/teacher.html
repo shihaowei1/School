@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>teacher</title>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="css/index.css"/>
+    <script src="js/jquery-3.3.1.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+</head>
+<h2 style="text-align: center">学生成绩管理</h2>
+<br>
+<button type="button" class="btn-primary" onclick="AllData()">显示所有学生</button>
+&nbsp;&nbsp;
+<span>输入学号：</span> <input type="text" id="StuId" name="StuId">
+<button type="button" class="btn-primary" onclick="SearchStu()">查找</button>
+
+<button type="button" class="btn-primary" data-toggle="modal" data-target="#addModal">添加学生信息</button>
+
+<button type="button" class="btn-primary" data-toggle="modal" data-target="#changeModal">修改学生信息</button>
+
+<br>
+<br>
+<button type="button" class="btn-primary" data-toggle="modal" data-target="#subjModal">发布选课科目</button>
+&nbsp;&nbsp;
+<button type="button" class="btn-primary" onclick="AllSubj()">显示所有可选科目</button>
+<br><br>
+
+<table class="table table-striped" style="width: 100%">
+    <thead>
+    <tr>
+        <td class="active" style="width: 20%">学号</td>
+        <td class="success" style="width: 20%">姓名</td>
+        <td class="info" style="width: 20%">年龄</td>
+        <td class="danger" style="width: 20%">成绩</td>
+        <td class="info" style="width: 20%">选课</td>
+    </tr>
+    </thead>
+    <tbody id="new_body">
+    </tbody>
+</table>
+
+<table class="table table-striped" style="width: 100%">
+    <thead>
+    <tr>
+        <td class="active" style="width: 20%">可选科目1</td>
+        <td class="success" style="width: 20%">可选科目2</td>
+        <td class="info" style="width: 20%">可选科目3</td>
+        <td class="danger" style="width: 20%">可选科目4</td>
+        <td class="info" style="width: 20%">可选科目5</td>
+    </tr>
+    </thead>
+    <tbody id="subj_body">
+    </tbody>
+</table>
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">添加学生</h4>
+            </div>
+            <div class="modal-body">
+                <form class="bs-example bs-example-form" role="form" id="stuForm">
+                    <div class="input-group">
+                        <span class="input-group-addon">学号</span>
+                        <input type="text" id="stu_id" class="form-control" name="stu_id">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">姓名</span>
+                        <input type="text" id="stu_name" class="form-control" name="stu_name">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">年龄</span>
+                        <input type="text" id="stu_age" class="form-control" name="stu_age">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">成绩</span>
+                        <input type="text" id="stu_score" class="form-control" name="stu_score">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="AddStu()">添加</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="changeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="changeModalLabel">添加学生</h4>
+            </div>
+            <div class="modal-body">
+                <form class="bs-example bs-example-form" role="form" id="changeForm">
+                    <div class="input-group">
+                        <span class="input-group-addon">学号（必填）</span>
+                        <input type="text" id="stu_id1" class="form-control" name="stu_id1">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">姓名（选填）</span>
+                        <input type="text" id="stu_name1" class="form-control" name="stu_name1">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">年龄（选填）</span>
+                        <input type="text" id="stu_age1" class="form-control" name="stu_age1">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">成绩（选填）</span>
+                        <input type="text" id="stu_score1" class="form-control" name="stu_score1">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">选课（选填）</span>
+                        <input type="text" id="stu_subj1" class="form-control" name="stu_subj1">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="ChangeStu()">添加</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="subjModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="subjModalLabel">发布选课科目</h4>
+            </div>
+            <div class="modal-body">
+                <form class="bs-example bs-example-form" role="form" id="subjForm">
+                    <div class="input-group">
+                        <span class="input-group-addon">可选科目1</span>
+                        <input type="text" id="subj1" class="form-control" name="subj1">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">可选科目2</span>
+                        <input type="text" id="subj2" class="form-control" name="subj2">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">可选科目3</span>
+                        <input type="text" id="subj3" class="form-control" name="subj3">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">可选科目4</span>
+                        <input type="text" id="subj4" class="form-control" name="subj4">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">可选科目5</span>
+                        <input type="text" id="subj5" class="form-control" name="subj5">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="SetSubj()">发布</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+
+<script type="text/javascript">
+    function AllData() {
+        $.ajax({
+            type: "post",
+            url: "/AllData",
+            success: function (res, status) {
+                var str = "";
+                if (status == "success") {
+                    for (var i = 0; i < res.length; i++) {
+                        var text = '<tr><td>' + res[i].stu_id + '</td>\n' +
+                            '<td>' + res[i].stu_name + '</td>\n' +
+                            '<td>' + res[i].age + '</td>\n' +
+                            '<td>' + res[i].score + '</td>\n' +
+                            '<td>' + res[i].subj + '</td>\n' +
+                            '</td><tr>';
+                        str += text;
+                    }
+                    $("#new_body").html(str);
+                } else {
+                    alert("获取信息失败！");
+                }
+
+            }
+        })
+    }
+
+    function SearchStu() {
+        var StuId = $("#StuId").val();
+        var msg = {StuId: StuId};
+
+        $.ajax({
+            type: "post",
+            url: "/SearchStu",
+            data: msg,
+            success: function (res, status) {
+                if (status == "success") {
+                    var text = '<tr><td>' + res.stu_id + '</td>\n' +
+                        '<td>' + res.stu_name + '</td>\n' +
+                        '<td>' + res.age + '</td>\n' +
+                        '<td>' + res.score + '</td>\n' +
+                        '<td>' + res.subj + '</td>\n' +
+                        '</td><tr>';
+                    $("#new_body").html(text);
+                } else {
+                    alert("查询失败！");
+                }
+            }
+        })
+    }
+
+    function AddStu() {
+        var stu_id = $("#stu_id").val();
+        var stu_name = $("#stu_name").val();
+        var stu_age = $("#stu_age").val();
+        var stu_score = $("#stu_score").val();
+
+        var msg = {stu_id: stu_id, stu_name: stu_name, stu_age: stu_age, stu_score: stu_score};
+
+        $.ajax({
+            type: "post",
+            url: "/AddStu",
+            data: msg,
+            success: function (res, status) {
+                if (res == "true") {
+                    alert("添加成功！");
+                    AllData();
+                } else {
+                    alert("添加失败！");
+                }
+            }
+        })
+
+    }
+
+    function ChangeStu() {
+        var stu_id = $("#stu_id1").val();
+        var stu_name = $("#stu_name1").val();
+        var stu_age = $("#stu_age1").val();
+        var stu_score = $("#stu_score1").val();
+        var stu_subj = $("#stu_subj1").val();
+
+        var msg = {stu_id: stu_id, stu_name: stu_name, stu_age: stu_age, stu_score: stu_score, stu_subj: stu_subj};
+
+        $.ajax({
+            type: "post",
+            url: "/ChangeStu",
+            data: msg,
+            success: function (res, status) {
+                if (res == "true") {
+                    alert("修改成功！");
+                    AllData();
+                } else {
+                    alert("修改失败！");
+                }
+            }
+        })
+
+    }
+
+    function AllSubj() {
+        $.ajax({
+            type: "post",
+            url: "/AllSubj",
+            success: function (res, status) {
+                var str = "";
+                if (status == "success") {
+                    for (var i = 0; i < res.length; i++) {
+                        var text = '<tr><td>' + res[i].subj1 + '</td>\n' +
+                            '<td>' + res[i].subj2 + '</td>\n' +
+                            '<td>' + res[i].subj3 + '</td>\n' +
+                            '<td>' + res[i].subj4 + '</td>\n' +
+                            '<td>' + res[i].subj5 + '</td>\n' +
+                            '</td><tr>';
+                        str += text;
+                    }
+                    $("#subj_body").html(str);
+                } else {
+                    alert("查询失败！");
+                }
+            }
+        })
+    }
+
+    function SetSubj() {
+        var subj1 = $("#subj1").val();
+        var subj2 = $("#subj2").val();
+        var subj3 = $("#subj3").val();
+        var subj4 = $("#subj4").val();
+        var subj5 = $("#subj5").val();
+
+        var msg = {subj1:subj1, subj2: subj2, subj3:subj3, subj4:subj4, subj5:subj5};
+
+        $.ajax({
+            type: "post",
+            url: "/SetSubj",
+            data: msg,
+            success: function (res, status) {
+                if (res == "true") {
+                    alert("设置成功！");
+                    AllSubj();
+                } else {
+                    alert("设置失败！");
+                }
+            }
+        })
+
+    }
+</script>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>student</title>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="css/index.css"/>
+    <script src="js/jquery-3.3.1.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+</head>
+<body onload="MyInfo()">
+<h2 style="text-align: center">学生个人查询</h2>
+<br>
+<button type="button" class="btn-primary" onclick="AllSubj()">显示所有可选科目</button>
+<br><br>
+<span>输入所选科目：</span> <input type="text" id="ChosSubj" name="ChosSubj">
+<button type="button" class="btn-primary" onclick="ChosSubj()">确认选择</button>
+<br><br>
+<table class="table table-striped" style="width: 100%">
+    <thead>
+    <tr>
+        <td class="active" style="width: 20%">学号</td>
+        <td class="success" style="width: 20%">姓名</td>
+        <td class="info" style="width: 20%">年龄</td>
+        <td class="danger" style="width: 20%">成绩</td>
+        <td class="info" style="width: 20%">选课</td>
+    </tr>
+    </thead>
+    <tbody id="new_body">
+    </tbody>
+</table>
+<br>
+<table class="table table-striped" style="width: 100%">
+    <thead>
+    <tr>
+        <td class="active" style="width: 20%">可选科目1</td>
+        <td class="success" style="width: 20%">可选科目2</td>
+        <td class="info" style="width: 20%">可选科目3</td>
+        <td class="danger" style="width: 20%">可选科目4</td>
+        <td class="info" style="width: 20%">可选科目5</td>
+    </tr>
+    </thead>
+    <tbody id="subj_body">
+    </tbody>
+</table>
+</body>
+<script type="text/javascript">
+    function MyInfo() {
+        $.ajax({
+            type: "post",
+            url: "/MyInfo",
+            success: function (res, status) {
+                if (status == "success") {
+                    var text = '<tr><td>' + res.stu_id + '</td>\n' +
+                        '<td>' + res.stu_name + '</td>\n' +
+                        '<td>' + res.age + '</td>\n' +
+                        '<td>' + res.score + '</td>\n' +
+                        '<td>' + res.subj + '</td>\n' +
+                        '</td><tr>';
+                    $("#new_body").html(text);
+                } else {
+                    alert("信息获取失败！");
+                }
+            }
+        })
+    }
+
+    function AllSubj() {
+        $.ajax({
+            type: "post",
+            url: "/AllSubj",
+            success: function (res, status) {
+                var str = "";
+                if (status == "success") {
+                    for (var i = 0; i < res.length; i++) {
+                        var text = '<tr><td>' + res[i].subj1 + '</td>\n' +
+                            '<td>' + res[i].subj2 + '</td>\n' +
+                            '<td>' + res[i].subj3 + '</td>\n' +
+                            '<td>' + res[i].subj4 + '</td>\n' +
+                            '<td>' + res[i].subj5 + '</td>\n' +
+                            '</td><tr>';
+                        str += text;
+                    }
+                    $("#subj_body").html(str);
+                } else {
+                    alert("查询失败！");
+                }
+            }
+        })
+    }
+
+    function ChosSubj() {
+        var ChousSubj = $("#ChosSubj").val();
+
+        var msg = {ChosSubj: ChousSubj};
+
+        $.ajax({
+            type: "post",
+            url: "/ChosSubj",
+            data: msg,
+            success: function (res, status) {
+                if (res == "true") {
+                    alert("选择成功！");
+                    MyInfo();
+                } else {
+                    alert("选择失败！");
+                }
+            }
+        })
+    }
+</script>
+</html>
